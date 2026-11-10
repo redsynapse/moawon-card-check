@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101a3a" />
+  <title>모두의창업 2차 1R · 카드 사용 판정</title>
+  <style>
+    :root {
+      --navy: #101a3a;
+      --navy-2: #1c2b5a;
+      --blue: #2f5bea;
+      --blue-soft: #eef2ff;
+      --ink: #172033;
+      --muted: #66708a;
+      --line: #e3e8f2;
+      --bg: #f4f6fb;
+      --white: #fff;
+      --green: #0f8a5f;
+      --green-soft: #e9f8f1;
+      --red: #c93a4a;
+      --red-soft: #fdeef0;
+      --amber: #a76500;
+      --amber-soft: #fff5df;
+      --shadow: 0 12px 40px rgba(16, 26, 58, .08);
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(900px 400px at 50% -160px, #dfe7ff 0%, rgba(223,231,255,0) 70%),
+        var(--bg);
+      color: var(--ink);
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+        "Noto Sans KR", "Malgun Gothic", "맑은 고딕", sans-serif;
+      line-height: 1.58;
+    }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 22px 16px 56px; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 26px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.02em; color: var(--navy); }
+    .brand-mark {
+      width: 34px; height: 34px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--blue), #6f8cff);
+      color: #fff; display: grid; place-items: center; font-size: 16px; font-weight: 900;
+      box-shadow: 0 8px 18px rgba(47, 91, 234, .28);
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 11px; border-radius: 999px;
+      background: var(--blue-soft); color: #2446b8;
+      font-size: 12px; font-weight: 800; white-space: nowrap;
+    }
+    .hero { margin-bottom: 20px; }
+    .hero h1 {
+      margin: 0 0 10px; font-size: clamp(27px, 6.4vw, 38px);
+      line-height: 1.18; letter-spacing: -.045em; color: var(--navy);
+    }
+    .hero h1 em { font-style: normal; color: var(--blue); }
+    .hero p { margin: 0; color: var(--muted); font-size: 15px; }
+    .card {
+      background: var(--white); border: 1px solid rgba(227,232,242,.9);
+      border-radius: 22px; box-shadow: var(--shadow); padding: 20px;
+    }
+    .card + .card { margin-top: 16px; }
+    .section-title { margin: 0 0 4px; font-size: 17px; letter-spacing: -.02em; color: var(--navy); }
+    .section-desc { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 800; color: #34405c; }
+    .hint { margin-top: 5px; font-size: 11.5px; color: #8a93a8; }
+    input, select, textarea {
+      width: 100%; border: 1.5px solid var(--line); border-radius: 13px;
+      background: #fbfcff; color: var(--ink); font: inherit; font-size: 15px;
+      padding: 13px 14px; outline: none; transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #9fb2ff; background: #fff; box-shadow: 0 0 0 4px rgba(47, 91, 234, .10);
+    }
+    textarea { min-height: 78px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
+    .amount-wrap { position: relative; }
+    .amount-wrap input { padding-right: 42px; }
+    .amount-wrap .won { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-weight: 800; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+    .chip {
+      border: 1px solid #dbe2f3; background: #fff; color: #3d4a68;
+      padding: 8px 12px; border-radius: 999px; font: inherit; font-size: 12.5px;
+      font-weight: 700; cursor: pointer; transition: .15s;
+    }
+    .chip:hover, .chip:focus-visible { border-color: #9fb2ff; background: var(--blue-soft); color: #2446b8; }
+    .btn {
+      width: 100%; border: 0; border-radius: 15px; padding: 16px 18px;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: #fff; font: inherit; font-size: 16px; font-weight: 900; letter-spacing: -.01em;
+      cursor: pointer; box-shadow: 0 12px 24px rgba(47, 91, 234, .24);
+      transition: transform .12s, filter .12s;
+    }
+    .btn:hover { filter: brightness(1.06); }
+    .btn:active { transform: translateY(1px); }
+    .btn[disabled] { opacity: .6; cursor: wait; }
+    .result { display: none; margin-top: 18px; border-radius: 20px; padding: 20px; border: 1px solid transparent; }
+    .result.show { display: block; animation: pop .22s ease-out; }
+    @keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .result.yes { background: var(--green-soft); border-color: #bfe8d8; }
+    .result.no { background: var(--red-soft); border-color: #f2c7cd; }
+    .result.conditional { background: var(--amber-soft); border-color: #f0d9a8; }
+    .result-head { display: flex; align-items: flex-start; gap: 12px; }
+    .result-icon {
+      width: 48px; height: 48px; border-radius: 15px; flex: 0 0 auto;
+      display: grid; place-items: center; font-size: 24px; font-weight: 900; color: #fff;
+    }
+    .result.yes .result-icon { background: var(--green); }
+    .result.no .result-icon { background: var(--red); }
+    .result.conditional .result-icon { background: var(--amber); }
+    .result h2 { margin: 0 0 4px; font-size: 23px; letter-spacing: -.03em; }
+    .result .summary { margin: 0; color: #46516a; font-size: 13.5px; }
+    .result-badge {
+      display: inline-flex; margin-top: 10px; padding: 6px 10px; border-radius: 999px;
+      background: rgba(167,101,0,.12); color: #8a5400; font-size: 11.5px; font-weight: 900;
+    }
+    .detail { margin-top: 18px; display: grid; gap: 14px; }
+    .detail-box { background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.9); border-radius: 14px; padding: 13px 14px; }
+    .detail-box h3 { margin: 0 0 7px; font-size: 13px; color: #34405c; letter-spacing: -.01em; }
+    .detail-box ul { margin: 0; padding-left: 18px; }
+    .detail-box li { margin: 4px 0; font-size: 13px; color: #46516a; word-break: keep-all; }
+    .rules { margin-top: 28px; }
+    .rules-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .rules-head h2 { margin: 0; font-size: 20px; letter-spacing: -.03em; color: var(--navy); }
+    .rules-head span { font-size: 11.5px; color: var(--muted); }
+    .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px) { .rule-grid { grid-template-columns: 1fr; } }
+    .rule {
+      background: #fff; border: 1px solid var(--line); border-radius: 15px; padding: 14px;
+    }
+    .rule b { display: block; font-size: 13.5px; color: var(--navy); margin-bottom: 3px; }
+    .rule p { margin: 0; font-size: 12px; color: var(--muted); word-break: keep-all; }
+    .thresholds { display: grid; gap: 8px; margin-top: 12px; }
+    .threshold {
+      display: flex; gap: 10px; align-items: flex-start; background: #fff;
+      border: 1px solid var(--line); border-radius: 13px; padding: 11px 13px;
+    }
+    .threshold b { flex: 0 0 auto; color: var(--blue); font-size: 12px; min-width: 52px; }
+    .threshold span { font-size: 12.5px; color: #4a5570; }
+    .note {
+      margin-top: 16px; padding: 14px; border-radius: 14px;
+      background: #fff8e8; border: 1px solid #f1dfb8; color: #6b5221; font-size: 12px;
+    }
+    footer { margin-top: 26px; color: #8a93a8; font-size: 11.5px; text-align: center; line-height: 1.7; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="topbar">
+      <div class="brand"><span class="brand-mark">m</span> 모두의창업</div>
+      <span class="pill">2차 · 1R · 200만원 카드</span>
+    </div>
+
+    <section class="hero">
+      <h1>이 지출, <em>결제해도 될까요?</em></h1>
+      <p>신한 클린 선불카드 사용 전에 30초로 확인하세요. 규정상 가능/불가와 필요한 증빙을 바로 알려드립니다.</p>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">지출 내용을 알려주세요</h2>
+      <p class="section-desc">정확할수록 판정이 좋아집니다. 모르는 항목은 ‘모르겠음’으로 두세요.</p>
+
+      <div class="chips" aria-label="빠른 예시">
+        <button type="button" class="chip" data-example="laptop">노트북 구입</button>
+        <button type="button" class="chip" data-example="outsourcing">외주 개발비</button>
+        <button type="button" class="chip" data-example="book">도서 구입</button>
+        <button type="button" class="chip" data-example="ai">AI 구독료</button>
+        <button type="button" class="chip" data-example="taxi">택시비</button>
+        <button type="button" class="chip" data-example="parking">주차비</button>
+      </div>
+
+      <form id="expense-form" autocomplete="off">
+        <div class="field">
+          <label for="description">무엇을 결제하나요?</label>
+          <textarea id="description" name="description" placeholder="예: 앱 개발 외주비, 전문 도서 구입, 생성형 AI 구독료" required></textarea>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="amount">금액</label>
+            <div class="amount-wrap">
+              <input id="amount" name="amount" inputmode="numeric" placeholder="0" required />
+              <span class="won">원</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="category">비목</label>
+            <select id="category" name="category">
+              <option value="모르겠음">모르겠음</option>
+              <option value="재료구입비">재료구입비</option>
+              <option value="외주용역비(마케팅·광고 포함)">외주용역비(마케팅·광고 포함)</option>
+              <option value="문헌구입비">문헌구입비</option>
+              <option value="지급수수료">지급수수료</option>
+              <option value="여비·회의비">여비·회의비</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="payment">결제 방식</label>
+            <select id="payment" name="payment">
+              <option value="카드 직접 결제">카드 직접 결제</option>
+              <option value="온라인/PG 결제">온라인/PG 결제</option>
+              <option value="계좌이체/현금">계좌이체/현금</option>
+              <option value="해외 결제">해외 결제</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="asset">자산성 물품인가요?</label>
+            <select id="asset" name="asset">
+              <option value="아님">아님</option>
+              <option value="50만원 이하">50만원 이하</option>
+              <option value="50만원 초과">50만원 초과</option>
+              <option value="모르겠음">모르겠음</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="relevance">창업 아이템과의 관련성</label>
+          <textarea id="relevance" name="relevance" placeholder="예: 우리 서비스의 시제품 제작에 직접 사용합니다."></textarea>
+          <div class="hint">적정·부적정의 핵심 기준입니다. 한 줄이라도 구체적으로 적어주세요.</div>
+        </div>
+
+        <div class="field">
+          <label for="evidence">증빙(주문상세·영수증)을 만들 수 있나요?</label>
+          <select id="evidence" name="evidence">
+            <option value="가능">가능</option>
+            <option value="불가능">불가능</option>
+            <option value="모르겠음">모르겠음</option>
+          </select>
+        </div>
+
+        <div class="field" id="travel-fields" style="display:none">
+          <div class="row">
+            <div>
+              <label for="region">숙박 지역(숙박비인 경우)</label>
+              <select id="region" name="region">
+                <option value="해당 없음">해당 없음</option>
+                <option value="특별시">특별시 (10만원/박)</option>
+                <option value="광역시">광역시 (8만원/박)</option>
+                <option value="그 밖의 지역">그 밖의 지역 (7만원/박)</option>
+              </select>
+            </div>
+            <div>
+              <label for="nights">숙박 일수</label>
+              <input id="nights" name="nights" type="number" min="0" value="0" inputmode="numeric" />
+            </div>
+          </div>
+        </div>
+
+        <button class="btn" id="submit-btn" type="submit">판정하기</button>
+      </form>
+    </section>
+
+    <section id="result" class="result" aria-live="polite">
+      <div class="result-head">
+        <div class="result-icon" id="result-icon">?</div>
+        <div>
+          <h2 id="result-title">판정 결과</h2>
+          <p class="summary" id="result-summary"></p>
+          <span class="result-badge" id="approval-badge" style="display:none">멘토기관 사전승인 필요</span>
+        </div>
+      </div>
+      <div class="detail">
+        <div class="detail-box">
+          <h3>왜 이런 판정인가요?</h3>
+          <ul id="result-reasons"></ul>
+        </div>
+        <div class="detail-box">
+          <h3>필요한 증빙</h3>
+          <ul id="result-evidence"></ul>
+        </div>
+        <div class="detail-box">
+          <h3>주의사항</h3>
+          <ul id="result-cautions"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="rules">
+      <div class="rules-head">
+        <h2>200만원 카드, 5개 비목</h2>
+        <span>§4.1–4.6 요약</span>
+      </div>
+      <div class="rule-grid">
+        <div class="rule"><b>① 재료구입비</b><p>재료·원료·부품, 학습·검증용 데이터, 소모품. 개인용 전자기기는 불가.</p></div>
+        <div class="rule"><b>② 외주용역비</b><p>앱·웹 개발, 디자인, 목업·금형, 마케팅·광고, 영상, 시장조사 등 외부 위탁.</p></div>
+        <div class="rule"><b>③ 문헌구입비</b><p>아이템 조사·연구에 필요한 도서, 논문, 보고서, 유료 자료.</p></div>
+        <div class="rule"><b>④ 지급수수료</b><p>시험·인증, 기자재 임차, 전시·박람회, 소프트웨어·생성형 AI 구독, 특허·상표 출원.</p></div>
+        <div class="rule"><b>⑤ 여비·회의비</b><p>국내 출장 교통·숙박, 멘토·외부인 회의비. 주차·유류·국외 여비는 불가.</p></div>
+      </div>
+      <div class="thresholds">
+        <div class="threshold"><b>10만원</b><span>1건 10만원 미만은 가맹점명으로 사용처가 확인되면 증빙 면제. 10만원 이상은 증빙 필수.</span></div>
+        <div class="threshold"><b>50만원</b><span>1건 50만원 초과는 멘토기관 사전승인 필요. 자산성 물품은 50만원 초과 구입 불가(임차로 대체).</span></div>
+        <div class="threshold"><b>PG 결제</b><span>온라인·PG 결제는 금액과 무관하게 주문상세내역서 등 증빙 필수.</span></div>
+        <div class="threshold"><b>숙박 한도</b><span>특별시 10만원, 광역시 8만원, 그 밖의 지역 7만원/박. 초과분은 자부담.</span></div>
+      </div>
+      <div class="note">
+        이 앱은 참고용입니다. 최종 적정·부적정 판단은 책임멘토·멘토기관의 확인을 받으세요.
+        특히 50만원 초과, 자산성 물품, PG 결제, 여비·회의비는 결제 전에 문의하는 것이 안전합니다.
+      </div>
+    </section>
+
+    <footer>
+      모두의창업 2차 1R · 창업활동자금 200만원 카드 판정 도우미<br />
+      본 서비스는 공식 승인 도구가 아니며, 규정 원문과 멘토기관 안내가 우선합니다.
+    </footer>
+  </main>
+
+  <script>
+    const form = document.getElementById('expense-form');
+    const result = document.getElementById('result');
+    const submitBtn = document.getElementById('submit-btn');
+    const travelFields = document.getElementById('travel-fields');
+    const categoryEl = document.getElementById('category');
+    const amountEl = document.getElementById('amount');
+
+    const examples = {
+      laptop: { description: '노트북 구입', amount: 1500000, category: '재료구입비', payment: '카드 직접 결제', asset: '50만원 초과', relevance: '시제품 개발에 사용할 예정입니다.' },
+      outsourcing: { description: '앱 개발 외주', amount: 800000, category: '외주용역비(마케팅·광고 포함)', payment: '카드 직접 결제', asset: '아님', relevance: '우리 서비스의 MVP 앱 개발을 외부 업체에 위탁합니다.' },
+      book: { description: '전문 도서 구입', amount: 45000, category: '문헌구입비', payment: '카드 직접 결제', asset: '아님', relevance: '아이템 시장조사에 필요한 전문 서적입니다.' },
+      ai: { description: '생성형 AI 구독료', amount: 30000, category: '지급수수료', payment: '온라인/PG 결제', asset: '아님', relevance: '서비스 기획과 문서 작성에 사용합니다.' },
+      taxi: { description: '창업 활동 택시비', amount: 18000, category: '여비·회의비', payment: '카드 직접 결제', asset: '아님', relevance: '멘토 미팅 이동에 사용했습니다.' },
+      parking: { description: '주차비', amount: 5000, category: '여비·회의비', payment: '카드 직접 결제', asset: '아님', relevance: '멘토 미팅 주차비입니다.' }
+    };
+
+    function setExample(key) {
+      const data = examples[key];
+      if (!data) return;
+      document.getElementById('description').value = data.description;
+      amountEl.value = data.amount.toLocaleString('ko-KR');
+      categoryEl.value = data.category;
+      document.getElementById('payment').value = data.payment;
+      document.getElementById('asset').value = data.asset;
+      document.getElementById('relevance').value = data.relevance;
+      document.getElementById('evidence').value = '가능';
+      toggleTravel();
+      result.classList.remove('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('[data-example]').forEach((btn) => {
+      btn.addEventListener('click', () => setExample(btn.dataset.example));
+    });
+
+    amountEl.addEventListener('input', () => {
+      const digits = amountEl.value.replace(/[^0-9]/g, '');
+      amountEl.value = digits ? Number(digits).toLocaleString('ko-KR') : '';
+    });
+
+    function toggleTravel() {
+      travelFields.style.display = categoryEl.value === '여비·회의비' ? 'block' : 'none';
+    }
+    categoryEl.addEventListener('change', toggleTravel);
+
+    function esc(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+    }
+
+    function renderList(id, items) {
+      const el = document.getElementById(id);
+      el.innerHTML = '';
+      (items && items.length ? items : ['없음']).forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        el.appendChild(li);
+      });
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const rawAmount = amountEl.value.replace(/[^0-9]/g, '');
+      const payload = {
+        description: document.getElementById('description').value.trim(),
+        amount: rawAmount ? Number(rawAmount) : 0,
+        category: categoryEl.value,
+        payment: document.getElementById('payment').value,
+        relevance: document.getElementById('relevance').value.trim(),
+        asset: document.getElementById('asset').value,
+        evidence: document.getElementById('evidence').value,
+        region: document.getElementById('region').value,
+        nights: Number(document.getElementById('nights').value || 0)
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '판정 중…';
+      try {
+        const res = await fetch('/api/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        result.className = 'result show ' + data.decision;
+        document.getElementById('result-icon').textContent =
+          data.decision === 'yes' ? '✓' : data.decision === 'no' ? '✕' : '!';
+        document.getElementById('result-title').textContent = data.title;
+        document.getElementById('result-summary').textContent = data.summary;
+        document.getElementById('approval-badge').style.display = data.approval_required ? 'inline-flex' : 'none';
+        renderList('result-reasons', data.reasons);
+        renderList('result-evidence', data.evidence);
+        renderList('result-cautions', data.cautions);
+        result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (error) {
+        result.className = 'result show conditional';
+        document.getElementById('result-icon').textContent = '!';
+        document.getElementById('result-title').textContent = '잠시 후 다시 시도해 주세요';
+        document.getElementById('result-summary').textContent = '판정 서버에 연결하지 못했습니다.';
+        renderList('result-reasons', ['네트워크 상태를 확인한 뒤 다시 시도해 주세요.']);
+        renderList('result-evidence', []);
+        renderList('result-cautions', []);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '판정하기';
+      }
+    });
+  </script>
+</body>
+</html>
